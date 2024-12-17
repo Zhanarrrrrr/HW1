@@ -25,6 +25,26 @@ public class MyListsTest extends CoreTestClass {
         MyListsPageObject myListsPageObject = new MyListsPageObject(driver);
         myListsPageObject.navigateToMyList();
         myListsPageObject.displayList();
+        public void removeArticleFromList(int articleIndex) {
+            this.swipeElementToLeft(
+                    getArticleElementByIndex(articleIndex),
+                    "Не удалось удалить статью по индексу: " + articleIndex
+            );
+        }
+
+        public void checkIfOnlyOneArticleIsSaved() {
+            int articlesCount = this.getSavedArticlesCount();
+            if (articlesCount != 1) {
+                throw new AssertionError("В списке должно остаться только одна статья, но их " + articlesCount);
+            }
+        }
+
+        private int getSavedArticlesCount() {
+            return this.waitForElements(
+                    By.xpath("//android.widget.TextView[@resource-id='org.wikipedia:id/page_list_item_title']")
+            ).size();
+        }
+
     }
 
 
